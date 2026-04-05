@@ -1,7 +1,6 @@
 ---
-allowed-tools: Bash, Read, Write, Edit, Glob, Grep
+name: obsidian-sync
 description: Sync project documentation (.md, .pdf) to Obsidian vault
-user-invocable: true
 ---
 
 Run the obsidian-sync script to sync project documentation files to the user's Obsidian vault.

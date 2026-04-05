@@ -1,14 +1,15 @@
 """
-obsidian-sync: Sync project .md files to Obsidian vault.
+obsidian-sync: Sync project documentation files (.md, .pdf, ...) to Obsidian vault.
 
 Modes:
   symlink (default) - Move files to vault, create symlinks in project
   copy              - Copy files to vault, originals stay in project
 
 Usage:
-  python sync_to_obsidian.py                    # auto-detect everything
-  python sync_to_obsidian.py --dry-run          # preview only
-  python sync_to_obsidian.py --mode copy        # use copy mode
+  python sync_to_obsidian.py                          # auto-detect everything
+  python sync_to_obsidian.py --dry-run                # preview only
+  python sync_to_obsidian.py --mode copy              # use copy mode
+  python sync_to_obsidian.py --extensions .md,.pdf    # specify file types
 """
 
 import argparse
@@ -188,18 +189,24 @@ def save_manifest(manifest_path: Path, manifest: dict):
 
 # ── Scanning ─────────────────────────────────────────────────────
 
-def scan_md_files(project_dir: Path) -> list[Path]:
-    """Scan project for .md files, applying exclusion rules.
+DEFAULT_EXTENSIONS = {".md", ".pdf"}
+
+
+def scan_files(project_dir: Path, extensions: set[str] | None = None) -> list[Path]:
+    """Scan project for files matching extensions, applying exclusion rules.
 
     Returns list of relative paths.
     """
-    md_files = []
-    for path in project_dir.rglob("*.md"):
+    exts = extensions or DEFAULT_EXTENSIONS
+    files = []
+    for path in project_dir.rglob("*"):
+        if path.suffix.lower() not in exts:
+            continue
         rel = path.relative_to(project_dir)
         if not is_excluded(rel) and not path.is_symlink():
-            md_files.append(rel)
-    md_files.sort()
-    return md_files
+            files.append(rel)
+    files.sort()
+    return files
 
 
 # ── Sync actions ─────────────────────────────────────────────────
@@ -333,7 +340,7 @@ def print_actions(actions: list[dict], mode: str):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Sync project .md files to Obsidian vault"
+        description="Sync project documentation files to Obsidian vault"
     )
     parser.add_argument(
         "--project-dir",
@@ -357,6 +364,11 @@ def main():
         choices=["symlink", "copy"],
         default="symlink",
         help="Sync mode (default: symlink)",
+    )
+    parser.add_argument(
+        "--extensions",
+        default=None,
+        help="Comma-separated file extensions to sync (default: .md,.pdf)",
     )
     parser.add_argument(
         "--dry-run",
@@ -400,6 +412,15 @@ def main():
     project_name = args.project_name or detect_project_name(project_dir)
     vault_project_dir = vault_dir / "projects" / project_name
 
+    # ── Parse extensions
+    if args.extensions:
+        extensions = {
+            ext.strip() if ext.strip().startswith(".") else f".{ext.strip()}"
+            for ext in args.extensions.split(",")
+        }
+    else:
+        extensions = DEFAULT_EXTENSIONS
+
     # ── Print header
     print(f"\n  obsidian-sync")
     print(f"  {'─' * 50}")
@@ -407,19 +428,20 @@ def main():
     print(f"  Name:     {project_name}")
     print(f"  Vault:    {vault_project_dir}")
     print(f"  Mode:     {args.mode}")
+    print(f"  Types:    {', '.join(sorted(extensions))}")
 
     # ── Scan files
-    md_files = scan_md_files(project_dir)
-    print(f"  Found:    {len(md_files)} .md files")
+    files = scan_files(project_dir, extensions)
+    print(f"  Found:    {len(files)} files")
 
-    if not md_files:
-        print("\n  No .md files to sync.")
+    if not files:
+        print("\n  No files to sync.")
         return
 
     # ── Load manifest & compute actions
     manifest_path = vault_project_dir / ".sync-manifest.json"
     manifest = load_manifest(manifest_path)
-    actions = compute_actions(md_files, project_dir, vault_project_dir, args.mode, manifest)
+    actions = compute_actions(files, project_dir, vault_project_dir, args.mode, manifest)
 
     # ── Display actions
     print_actions(actions, args.mode)

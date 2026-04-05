@@ -8,9 +8,9 @@
 
 ## The Problem
 
-You clone repos. Each has scattered `.md` files — READMEs, design docs, guides, API references — buried in nested directories. You want to read and search them in one place, but they live across dozens of project folders.
+You clone repos. Each has scattered documentation — `.md` files, `.pdf` references — buried in nested directories. You want to read and search them in one place, but they live across dozens of project folders.
 
-**obsidian-sync** moves all project Markdown files into your Obsidian vault with a single command, keeping them browsable both in Obsidian and in the original project.
+**obsidian-sync** moves all project documentation into your Obsidian vault with a single command, keeping them browsable both in Obsidian and in the original project.
 
 ## How It Works
 
@@ -21,7 +21,7 @@ your-project/                          Obsidian vault/projects/your-project/
   README.md                  ──→         README.md
 ```
 
-1. **Scans** the project for all `.md` files
+1. **Scans** the project for all `.md` and `.pdf` files (configurable)
 2. **Flattens** deep directory paths into readable single-level folders (`a/b/c/file.md` → `a-b-c/file.md`)
 3. **Moves** files to vault and creates **symlinks** in the original locations (or copies, your choice)
 4. **Tracks** sync state via manifest — re-run safely anytime
@@ -82,11 +82,12 @@ All optional — zero arguments works out of the box.
 | `--vault-dir PATH` | Obsidian vault path | Auto-detect |
 | `--project-name NAME` | Project folder name in vault | From git remote / dir name |
 | `--mode {symlink,copy}` | Sync strategy | `symlink` |
+| `--extensions EXTS` | File types to sync (comma-separated) | `.md,.pdf` |
 | `--dry-run` | Preview without making changes | Off |
 
 ## What Gets Synced
 
-**Included:** All `.md` files in the project tree.
+**Included:** All `.md` and `.pdf` files by default. Customize with `--extensions`.
 
 **Excluded automatically:**
 - `CLAUDE.md` — Claude Code config

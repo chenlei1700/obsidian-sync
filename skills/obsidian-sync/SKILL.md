@@ -1,7 +1,7 @@
 ---
 name: obsidian-sync
 description: >
-  Sync project markdown documentation files to an Obsidian vault for unified knowledge management.
+  Sync project documentation files (.md, .pdf) to an Obsidian vault for unified knowledge management.
   This skill should be used when the user says "sync to obsidian", "obsidian sync",
   "同步到obsidian", "文档同步", "move docs to obsidian", "sync docs",
   or wants to organize project documentation in Obsidian.
@@ -9,7 +9,7 @@ description: >
 
 # Obsidian Sync
 
-Sync `.md` files from the current project to an Obsidian vault.
+Sync documentation files (`.md`, `.pdf`, etc.) from the current project to an Obsidian vault.
 
 ## Workflow
 
@@ -42,6 +42,7 @@ All parameters are auto-detected by default:
 | `--vault-dir` | Obsidian vault path | Auto-detect from Obsidian config |
 | `--project-name` | Name in vault | From git remote or dir name |
 | `--mode` | symlink / copy | symlink |
+| `--extensions` | File types to sync | `.md,.pdf` |
 | `--dry-run` | Preview only | off |
 
 ## Notes

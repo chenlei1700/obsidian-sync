@@ -1,0 +1,8 @@
+{
+  "name": "obsidian-sync",
+  "description": "Sync project markdown files to Obsidian vault for unified knowledge management. Supports symlink and copy modes.",
+  "version": "0.1.0",
+  "author": {
+    "name": "chenlei"
+  }
+}

@@ -31,7 +31,7 @@ your-project/                          Obsidian vault/projects/your-project/
 ### Install
 
 ```bash
-claude plugins add github.com/chenlei/obsidian-sync
+claude plugins add github.com/chenlei1700/obsidian-sync
 ```
 
 ### Use

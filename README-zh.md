@@ -17,8 +17,8 @@
 ```
 项目目录/                                Obsidian vault/projects/项目名/
   ai/gnn/docs/SETUP.md      ──→         ai-gnn-docs/SETUP.md
-  docs/设计���档.md             ──���         docs/设计文档.md
-  README.md                  ─��→         README.md
+  docs/设计文档.md              ──→         docs/设计文档.md
+  README.md                  ──→         README.md
 ```
 
 1. **扫描** 项目中所有 `.md` 文件
@@ -31,7 +31,7 @@
 ### 安装
 
 ```bash
-claude plugins add github.com/chenlei/obsidian-sync
+claude plugins add github.com/chenlei1700/obsidian-sync
 ```
 
 ### 使用
@@ -49,7 +49,7 @@ claude plugins add github.com/chenlei/obsidian-sync
 /obsidian-sync --mode copy
 ```
 
-也可以直接运行脚���：
+也可以直接运行脚本：
 
 ```bash
 python sync_to_obsidian.py --dry-run
@@ -78,10 +78,10 @@ symlink 模式下，链接对 git、编辑器、代码引用完全透明——�
 
 | 参数 | 说明 | 默认值 |
 |------|------|--------|
-| `--project-dir 路径` | 项目根目录 | 当��目录 |
+| `--project-dir 路径` | 项目根目录 | 当前目录 |
 | `--vault-dir 路径` | Obsidian vault 路径 | 自动检测 |
 | `--project-name 名称` | 在 vault 中的项目文件夹名 | 从 git remote / 目录名推导 |
-| `--mode {symlink,copy}` | 同���策略 | `symlink` |
+| `--mode {symlink,copy}` | 同步策略 | `symlink` |
 | `--dry-run` | 仅预览，不执行 | 关闭 |
 
 ## 同步范围
@@ -129,12 +129,12 @@ Obsidian Vault/
 
 ## 平台支持
 
-| 平台 | symlink 模式 | copy 模�� |
+| 平台 | symlink 模式 | copy 模式 |
 |------|-------------|-----------|
 | Windows（开发者模式开启） | 支持 | 支持 |
 | Windows（开发者模式关闭） | 不支持（有明确提示） | 支持 |
 | macOS | 支持 | 支持 |
-| Linux | 支持 | ��持 |
+| Linux | 支持 | 支持 |
 
 ## 环境要求
 
